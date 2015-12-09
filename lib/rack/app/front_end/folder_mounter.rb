@@ -5,9 +5,9 @@ class Rack::App::FrontEnd::FolderMounter
     @app_class = app_class
   end
 
-  def mount(path_from_project_root)
-    source_folder_path = PWD.join(path_from_project_root)
-    template_paths_for(path_from_project_root).each do |template_path|
+  def mount(folder_path)
+    source_folder_path = get_source_path(folder_path)
+    template_paths_for(source_folder_path).each do |template_path|
 
       request_path = request_path_by(source_folder_path, template_path)
       template = Rack::App::FrontEnd::Template.new(template_path, fallback_handler: Rack::App::File::Streamer)
@@ -16,10 +16,18 @@ class Rack::App::FrontEnd::FolderMounter
     end
   end
 
+  def get_source_path(folder_path)
+    if folder_path.to_s[0] == File::Separator
+      PWD.join(folder_path)
+    else
+      File.join(File.dirname(caller[1].split(':')[0]),folder_path)
+    end
+  end
+
   protected
 
-  def template_paths_for(path_from_project_root)
-    Dir.glob(File.join(PWD.join(path_from_project_root), '**', '*'))
+  def template_paths_for(source_folder_path)
+    Dir.glob(File.join(source_folder_path, '**', '*'))
         .select { |p| not File.directory?(p) }
   end
 
