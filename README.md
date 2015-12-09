@@ -1,15 +1,13 @@
-# Rack::App::Mvc
+# Rack::App::FrontEnd
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rack/app/front_end`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This is an extend module for Rack::App to have FrontEnd framework extensions for the core app class
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'rack-app-mvc'
+gem 'rack-app-front_end'
 ```
 
 And then execute:
@@ -18,11 +16,23 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install rack-app-mvc
+    $ gem install rack-app-front_end
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+
+class App < Rack::App
+  
+  extend Rack::App::FrontEnd 
+  
+  mount_folder '/public'
+  mount_folder 'relative/folder/from/this'
+  
+end
+
+```
+
 
 ## Development
 
