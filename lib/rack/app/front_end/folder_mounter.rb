@@ -5,11 +5,10 @@ class Rack::App::FrontEnd::FolderMounter
     @app_class = app_class
   end
 
-  def mount(folder_path)
-    source_folder_path = get_source_path(folder_path)
-    template_paths_for(source_folder_path).each do |template_path|
+  def mount(absolute_folder_path)
+    template_paths_for(absolute_folder_path).each do |template_path|
 
-      request_path = request_path_by(source_folder_path, template_path)
+      request_path = request_path_by(absolute_folder_path, template_path)
       template = Rack::App::FrontEnd::Template.new(template_path, fallback_handler: Rack::App::File::Streamer)
       create_endpoint_for(request_path, template)
 
@@ -39,7 +38,7 @@ class Rack::App::FrontEnd::FolderMounter
         if result.respond_to?(:each)
           response.body = result
         else
-          response.write(result)
+          response.write(self.class.layout.render(result))
         end
         response.finish
       end
