@@ -26,8 +26,8 @@ class App < Rack::App
   
   extend Rack::App::FrontEnd 
   
-  mount_folder '/public'
-  mount_folder 'relative/folder/from/this'
+  mount_folder '/from/project/root/path'
+  mount_folder 'relative/folder/from/this/file/to/folder'
   
 end
 

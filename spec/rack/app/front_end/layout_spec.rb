@@ -7,13 +7,13 @@ describe Rack::App::FrontEnd::Layout do
     subject { instance.render('hello world!') }
 
     context 'when file given with from root path' do
-      let(:file_path) { PWD.join('spec','fixtures','layout.html.erb') }
+      let(:file_path) { Rack::App::Utils.pwd('spec','fixtures','layout.html.erb') }
 
       it { is_expected.to eq '<body>hello world!</body>'}
     end
 
     context 'when file given with relative path' do
-      let(:file_path) { PWD.join('spec','fixtures','layout.html.erb') }
+      let(:file_path) { Rack::App::Utils.pwd('spec','fixtures','layout.html.erb') }
 
       it { is_expected.to eq '<body>hello world!</body>'}
     end

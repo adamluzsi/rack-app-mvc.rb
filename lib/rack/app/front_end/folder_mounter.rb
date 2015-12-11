@@ -1,4 +1,3 @@
-require 'pwd'
 class Rack::App::FrontEnd::FolderMounter
 
   def initialize(app_class)
@@ -12,14 +11,6 @@ class Rack::App::FrontEnd::FolderMounter
       template = Rack::App::FrontEnd::Template.new(template_path, fallback_handler: Rack::App::File::Streamer)
       create_endpoint_for(request_path, template)
 
-    end
-  end
-
-  def get_source_path(folder_path)
-    if folder_path.to_s[0] == File::Separator
-      PWD.join(folder_path)
-    else
-      File.join(File.dirname(caller[1].split(':')[0]),folder_path)
     end
   end
 

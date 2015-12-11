@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "maruku"
 
   spec.add_dependency 'rack-app'
+  spec.add_dependency 'kramdown'
   spec.add_dependency 'tilt'
-  spec.add_dependency 'pwd'
 
 end

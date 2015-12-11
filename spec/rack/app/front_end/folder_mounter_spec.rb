@@ -17,7 +17,7 @@ describe Rack::App::FrontEnd::FolderMounter do
   end
 
   describe '#mount' do
-    let(:folder_path) { PWD.join('spec','fixtures') }
+    let(:folder_path) { Rack::App::Utils.pwd('spec','fixtures') }
     subject { instance.mount(folder_path) }
 
     it 'should stream non templates' do
