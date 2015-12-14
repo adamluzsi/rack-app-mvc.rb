@@ -8,7 +8,7 @@ class Rack::App::FrontEnd::FolderMounter
     template_paths_for(absolute_folder_path).each do |template_path|
 
       request_path = request_path_by(absolute_folder_path, template_path)
-      template = Rack::App::FrontEnd::Template.new(template_path, fallback_handler: Rack::App::File::Streamer)
+      template = Rack::App::FrontEnd::Template.new(template_path, :fallback_handler => Rack::App::File::Streamer)
       create_endpoint_for(request_path, template)
 
     end
@@ -17,8 +17,7 @@ class Rack::App::FrontEnd::FolderMounter
   protected
 
   def template_paths_for(source_folder_path)
-    Dir.glob(File.join(source_folder_path, '**', '*'))
-        .select { |p| not File.directory?(p) }
+    Dir.glob(File.join(source_folder_path, '**', '*')).select { |p| not File.directory?(p) }
   end
 
   def create_endpoint_for(request_path, template)
@@ -38,10 +37,7 @@ class Rack::App::FrontEnd::FolderMounter
   end
 
   def request_path_by(source_folder_path, template_path)
-    Rack::Utils.clean_path_info template_path
-                                    .sub(source_folder_path, '')
-                                    .split(File::Separator).join('/')
-
+    Rack::Utils.clean_path_info(template_path.sub(source_folder_path, '').split(File::Separator).join('/'))
   end
 
 end

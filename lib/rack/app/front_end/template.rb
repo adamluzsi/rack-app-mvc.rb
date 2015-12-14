@@ -9,8 +9,8 @@ class Rack::App::FrontEnd::Template
 
   protected
 
-  def initialize(file_path,fallback_handler: Rack::App::FrontEnd::Template::PlainText)
-    @fallback_handler = fallback_handler
+  def initialize(file_path,options = {})
+    @fallback_handler = options[:fallback_handler] || Rack::App::FrontEnd::Template::PlainText
     @file_path = file_path
   end
 

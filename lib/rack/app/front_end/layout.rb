@@ -8,7 +8,7 @@ class Rack::App::FrontEnd::Layout < Rack::App::FrontEnd::Template
 
   def render_result(content)
     if it_is_a_template? and layout_file_is_exists?
-      render_with_tilt_templates([], -> { content })
+      render_with_tilt_templates([], lambda { content })
     else
       return content
     end

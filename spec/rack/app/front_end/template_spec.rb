@@ -17,7 +17,7 @@ describe Rack::App::FrontEnd::Template do
     context 'when file is a markdown with erb' do
       let(:file_path) { Rack::App::Utils.pwd('spec', 'fixtures', 'index.md.erb') }
 
-      it { is_expected.to eq "<h1>hello world!</h1>\n"}
+      it { is_expected.to eq "<h1 id=\"hello-world\">hello world!</h1>\n"}
     end
 
   end

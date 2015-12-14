@@ -32,7 +32,7 @@ describe Rack::App::FrontEnd::FolderMounter do
 
     it 'should parse even mixed templates such us markdown and erb' do
       subject
-      expect(get(:url => '/index.md.erb').body).to eq ["<h1>hello world</h1>\n"]
+      expect(get(:url => '/index.md.erb').body).to eq ["<h1 id=\"hello-world\">hello world</h1>\n"]
     end
 
   end

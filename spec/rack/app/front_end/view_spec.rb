@@ -5,7 +5,11 @@ describe Rack::App::FrontEnd::View do
 
     let(:instance) do
       o = described_class.new
-      o.define_singleton_method(:call) { |r| 'nope' }
+      class << o
+        define_method(:call) do |r|
+          'nope'
+        end
+      end
       o
     end
 
@@ -16,7 +20,7 @@ describe Rack::App::FrontEnd::View do
     end
 
     describe '#render' do
-      subject{ instance.render('index.html.erb') }
+      subject { instance.render('index.html.erb') }
 
       it { is_expected.to eq 'hello world!' }
     end

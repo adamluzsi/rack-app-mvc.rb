@@ -1,4 +1,19 @@
 language: ruby
+script: rspec spec
+
 rvm:
-  - 2.1.2
-before_install: gem install bundler -v 1.10.6
+
+  - 1.9
+  - 2.0
+  - 2.1
+
+  - ruby-head
+  - jruby-head
+
+branches:
+  only:
+    - master
+
+notifications:
+  email:
+    - adamluzsi@gmail.com
