@@ -17,25 +17,22 @@ describe Rack::App::FrontEnd::FolderMounter do
   end
 
   describe '#mount' do
-    let(:folder_path) { Rack::App::Utils.pwd('spec','fixtures') }
+    let(:folder_path) { Rack::App::Utils.pwd('spec', 'fixtures') }
     subject { instance.mount(folder_path) }
 
     it 'should stream non templates' do
       subject
-      response = get '/raw.txt'
-      expect(response.body).to be_a Rack::App::File::Streamer
+      expect(get(:url => '/raw.txt').body).to be_a Rack::App::File::Streamer
     end
 
     it 'should parse and fetch the raw text' do
       subject
-      response = get '/index.html.erb'
-      expect(response.body).to eq ["<p>hello world</p>"]
+      expect(get(:url => '/index.html.erb').body).to eq ["<p>hello world</p>"]
     end
 
     it 'should parse even mixed templates such us markdown and erb' do
       subject
-      response = get '/index.md.erb'
-      expect(response.body).to eq ["<h1>hello world</h1>\n"]
+      expect(get(:url => '/index.md.erb').body).to eq ["<h1>hello world</h1>\n"]
     end
 
   end
