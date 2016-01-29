@@ -20,9 +20,21 @@ describe Rack::App::FrontEnd::FolderMounter do
     let(:folder_path) { Rack::App::Utils.pwd('spec', 'fixtures') }
     subject { instance.mount(folder_path) }
 
-    it 'should stream non templates' do
-      subject
-      expect(get(:url => '/raw.txt').body).to be_a Rack::App::File::Streamer
+    context 'when static template file requested' do
+      it 'should send stream object for rack body' do
+        subject
+        expect(get(:url => '/raw.txt').body).to be_a Rack::App::File::Streamer
+      end
+
+      it 'should set the headers' do
+        subject
+        expect(get(:url => '/raw.txt').headers).to eq "Last-Modified" => "Wed, 09 Dec 2015 23:44:53 GMT"
+      end
+
+      it 'should update content length' do
+        subject
+        expect(get(:url => '/raw.txt').length).to eq 27
+      end
     end
 
     it 'should parse and fetch the raw text' do

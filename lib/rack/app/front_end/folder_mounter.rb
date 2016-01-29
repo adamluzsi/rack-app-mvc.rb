@@ -1,5 +1,7 @@
 class Rack::App::FrontEnd::FolderMounter
 
+  LAST_MODIFIED_HEADER = "Last-Modified"
+
   def initialize(app_class)
     @app_class = app_class
   end
@@ -25,8 +27,13 @@ class Rack::App::FrontEnd::FolderMounter
 
       get(request_path) do
         result = template.render(self)
-        if result.respond_to?(:each)
+
+        if result.is_a?(::Rack::App::File::Streamer)
+          response.length += result.length
+          response.headers[LAST_MODIFIED_HEADER]= result.mtime
           response.body = result
+        elsif result.respond_to?(:each)
+          result.each{|str| response.write(str) }
         else
           response.write(self.class.layout.render(result))
         end

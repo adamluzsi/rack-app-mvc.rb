@@ -1,8 +1,6 @@
 require 'tilt'
 class Rack::App::FrontEnd::Template
 
-  require 'rack/app/front_end/template/plain_text'
-
   def render(*args, &block)
     return render_result(*args, &block)
   end
@@ -10,7 +8,7 @@ class Rack::App::FrontEnd::Template
   protected
 
   def initialize(file_path,options = {})
-    @fallback_handler = options[:fallback_handler] || Rack::App::FrontEnd::Template::PlainText
+    @fallback_handler = options[:fallback_handler] || Rack::App::File::Streamer
     @file_path = file_path
   end
 
@@ -18,7 +16,7 @@ class Rack::App::FrontEnd::Template
     if it_is_a_template?
       render_with_tilt_templates(args, block)
     else
-      @fallback_handler.new(@file_path).render(*args, &block)
+      @fallback_handler.new(@file_path)
     end
   end
 
