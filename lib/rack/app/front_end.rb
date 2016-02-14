@@ -10,6 +10,11 @@ module Rack::App::FrontEnd
   require 'rack/app/front_end/layout'
   require 'rack/app/front_end/view'
   require 'rack/app/front_end/folder_mounter'
+  require 'rack/app/front_end/endpoint_methods'
+
+  def self.extended(klass)
+    klass.__send__(:include, ::Rack::App::FrontEnd::EndpointMethods)
+  end
 
   def mount_folder(folder_path)
     Rack::App::FrontEnd::FolderMounter.new(self).mount(Rack::App::FrontEnd::Utils.get_full_path(folder_path))
@@ -20,10 +25,6 @@ module Rack::App::FrontEnd
   def layout(layout_path=nil)
     @layout = Rack::App::FrontEnd::Layout.new(Rack::App::FrontEnd::Utils.get_full_path(layout_path)) unless layout_path.nil?
     @layout || Rack::App::FrontEnd::Layout.new(nil)
-  end
-
-  def default_layout
-    # code here
   end
 
 end

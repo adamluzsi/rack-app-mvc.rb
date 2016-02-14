@@ -11,7 +11,8 @@ class Rack::App::FrontEnd::FolderMounter
 
       request_path = request_path_by(absolute_folder_path, template_path)
       template = Rack::App::FrontEnd::Template.new(template_path, :fallback_handler => Rack::App::File::Streamer)
-      create_endpoint_for(request_path, template)
+
+      create_endpoint_for(request_path, template_path)
 
     end
   end
@@ -22,22 +23,18 @@ class Rack::App::FrontEnd::FolderMounter
     Dir.glob(File.join(source_folder_path, '**', '*')).select { |p| not File.directory?(p) }
   end
 
-  def create_endpoint_for(request_path, template)
+  def create_endpoint_for(request_path, template_path)
     @app_class.class_eval do
 
       get(request_path) do
-        result = template.render(self)
+        result = render(template_path)
 
         if result.is_a?(::Rack::App::File::Streamer)
-          response.length += result.length
-          response.headers[LAST_MODIFIED_HEADER]= result.mtime
-          response.body = result
-        elsif result.respond_to?(:each)
-          result.each{|str| response.write(str) }
+          result
         else
-          response.write(self.class.layout.render(result))
+          self.class.layout.render(result)
         end
-        response.finish
+
       end
 
     end
