@@ -29,6 +29,12 @@ class App < Rack::App
   mount_folder '/from/project/root/path'
   mount_folder 'relative/folder/from/this/file/to/folder'
   
+  
+  get '/some_url' do
+    @items = []
+    render 'some.html.erb'
+  end
+  
 end
 
 ```
