@@ -7,7 +7,6 @@ module Rack::App::FrontEnd
   require 'rack/app/front_end/version'
   require 'rack/app/front_end/utils'
   require 'rack/app/front_end/template'
-  require 'rack/app/front_end/layout'
   require 'rack/app/front_end/view'
   require 'rack/app/front_end/folder_mounter'
   require 'rack/app/front_end/endpoint_methods'
@@ -23,8 +22,8 @@ module Rack::App::FrontEnd
   alias mount_templates_from mount_folder
 
   def layout(layout_path=nil)
-    @layout = Rack::App::FrontEnd::Layout.new(Rack::App::FrontEnd::Utils.get_full_path(layout_path)) unless layout_path.nil?
-    @layout || Rack::App::FrontEnd::Layout.new(nil)
+    @layout = Rack::App::FrontEnd::Utils.get_full_path(layout_path) unless layout_path.nil?
+    @layout
   end
 
 end

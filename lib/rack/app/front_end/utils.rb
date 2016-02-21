@@ -4,10 +4,10 @@ module Rack::App::FrontEnd::Utils
 
   def get_full_path(file_path,caller_index=1)
     return nil if file_path.nil?
-    if file_path.to_s[0] == File::Separator
+    if file_path.to_s[0] == '/'
       Rack::App::Utils.pwd(file_path)
     else
-      File.join(File.dirname(caller[caller_index].split(':')[0]),file_path)
+      File.expand_path(File.join(File.dirname(caller[caller_index].split(':')[0]),file_path))
     end
   end
 

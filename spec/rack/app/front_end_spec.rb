@@ -17,23 +17,15 @@ describe Rack::App::FrontEnd do
     subject{ instance.layout }
 
     context 'when it is not pre defined' do
-      it { is_expected.to be_a Rack::App::FrontEnd::Layout}
-
-      it 'should be able to render layout using the predefined layout file' do
-        expect(subject.render('hello')).to eq "hello"
-      end
-
+      it { is_expected.to be nil}
     end
 
     context 'when it is defined to what' do
       before{ instance.layout '../../fixtures/layout.html.erb' }
 
-      it { is_expected.to be_a Rack::App::FrontEnd::Layout}
+      it { is_expected.to be_a String}
 
-      it 'should be able to render layout using the predefined layout file' do
-        expect(subject.render('hello')).to eq "<body>hello</body>"
-      end
-
+      it { is_expected.to eq Rack::App::Utils.pwd('spec','fixtures','layout.html.erb') }
     end
 
   end

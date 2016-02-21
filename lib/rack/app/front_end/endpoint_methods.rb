@@ -2,8 +2,10 @@ module Rack::App::FrontEnd::EndpointMethods
 
   def render(template_path)
 
-    template_full_path = if File.exist?(template_path)
-                           template_path
+    template_full_path = if template_path.to_s[0] == '/'
+                           project_file_path = Rack::App::Utils.pwd(template_path)
+                           File.exist?(project_file_path) ? project_file_path : template_path
+
                          else
 
                            app_dirname = File.join(
@@ -15,7 +17,9 @@ module Rack::App::FrontEnd::EndpointMethods
 
                          end
 
-    template = Rack::App::FrontEnd::Template.new(template_full_path)
+    options = {}
+    options[:layout]= self.class.layout if self.class.respond_to?(:layout)
+    template = Rack::App::FrontEnd::Template.new(template_full_path, options)
 
     return template.render(self)
 
