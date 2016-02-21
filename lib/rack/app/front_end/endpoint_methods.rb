@@ -9,7 +9,7 @@ module Rack::App::FrontEnd::EndpointMethods
                          else
 
                            app_dirname = File.join(
-                               File.dirname([caller[1..1]].flatten.first.split(/\.(?:rb|ru):\d/)[0]),
+                               File.dirname([caller[0]].flatten.first.split(/\.(?:rb|ru):\d/)[0]),
                                Rack::App::FrontEnd::Utils.underscore(self.class)
                            )
 
