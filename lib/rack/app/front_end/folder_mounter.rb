@@ -32,7 +32,7 @@ class Rack::App::FrontEnd::FolderMounter
   end
 
   def request_path_by(source_folder_path, template_path)
-    Rack::Utils.clean_path_info(template_path.sub(source_folder_path, '').split(File::Separator).join('/'))
+    Rack::Utils.clean_path_info(template_path.sub(source_folder_path, '').sub(/\..*$/, ''))
   end
 
 end
