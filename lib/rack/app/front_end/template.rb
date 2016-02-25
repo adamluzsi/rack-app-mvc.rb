@@ -17,7 +17,7 @@ class Rack::App::FrontEnd::Template
   def render_result(*args, &block)
     return Rack::App::File::Streamer.new(@file_path) unless it_is_a_template?
 
-    layout.render{ Tilt.new(@file_path).render(*args,&block) }
+    layout.render { Tilt.new(@file_path).render(*args, &block) }
   end
 
   def it_is_a_template?

@@ -22,8 +22,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
 
-  spec.add_dependency 'rack-app','>= 0.10.0'
-  spec.add_dependency 'kramdown'
+  spec.add_dependency 'rack-app','>= 0.24.0'
   spec.add_dependency 'tilt'
+
+  # spec.add_dependency 'kramdown'
 
 end
