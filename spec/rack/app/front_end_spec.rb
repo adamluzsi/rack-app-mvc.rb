@@ -13,15 +13,31 @@ describe Rack::App::FrontEnd do
     expect(Rack::App::FrontEnd::VERSION).not_to be nil
   end
 
-  describe 'layout' do
+  describe '.layout' do
     subject{ instance.layout }
 
     context 'when it is not pre defined' do
       it { is_expected.to be nil}
     end
 
-    context 'when it is defined to what' do
-      before{ instance.layout '../../fixtures/layout.html.erb' }
+    context 'when it is defined with relative' do
+      before{ instance.layout 'layout.html.erb' }
+
+      it { is_expected.to be_a String}
+
+      it { is_expected.to eq Rack::App::Utils.pwd('spec','rack','app','front_end_spec','layout.html.erb') }
+    end
+
+    context 'when it is defined with relative' do
+      before{ instance.layout './../../fixtures/layout.html.erb' }
+
+      it { is_expected.to be_a String}
+
+      it { is_expected.to eq Rack::App::Utils.pwd('spec','fixtures','layout.html.erb') }
+    end
+
+    context 'when it is defined with project root absolute path' do
+      before{ instance.layout '/spec/fixtures/layout.html.erb' }
 
       it { is_expected.to be_a String}
 
