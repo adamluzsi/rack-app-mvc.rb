@@ -27,8 +27,8 @@ class App < Rack::App
   extend Rack::App::FrontEnd 
   
   mount_folder '/from/project/root/path'
-  mount_folder 'relative/folder/from/this/file/to/folder'
   
+  mount_folder 'relative/folder/from/this/file/to/folder'
   
   get '/some_url' do
     @items = []
