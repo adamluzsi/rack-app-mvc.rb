@@ -17,8 +17,14 @@ module Rack::App::FrontEnd
 
     [:extended, :included].each do |method|
       define_method(method) do |klass|
+
         klass.__send__(:include, self::InstanceMethods)
         klass.__send__(:extend, self::SingletonMethods)
+
+        klass.on_inheritance do |parent, child|
+          child.layout(parent.layout)
+        end
+
       end
     end
 
