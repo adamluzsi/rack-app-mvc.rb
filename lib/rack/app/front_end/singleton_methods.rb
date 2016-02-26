@@ -11,7 +11,7 @@ module Rack::App::FrontEnd::SingletonMethods
     @layout
   end
 
-  def cache_templates(*template_paths)
+  def precache_templates(*template_paths)
     full_paths = template_paths.map { |path| Rack::App::Utils.expand_path(path) }
     full_paths.each do |full_path|
       Rack::App::FrontEnd::Template.cache.fetch(full_path) { Tilt.new(full_path) }

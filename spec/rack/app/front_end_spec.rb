@@ -46,12 +46,13 @@ describe Rack::App::FrontEnd do
 
   end
 
-  describe '.cache_templates' do
+  describe '.precache_templates' do
 
     rack_app do
       extend Rack::App::FrontEnd
 
-      cache_templates Rack::App::Utils.pwd('spec','fixtures','hello.html')
+      precache_templates Rack::App::Utils.pwd('spec','fixtures','hello.html')
+
       get '/say' do
         render(Rack::App::Utils.pwd('spec','fixtures','hello.html'))
       end
