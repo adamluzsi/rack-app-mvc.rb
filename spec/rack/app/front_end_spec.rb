@@ -46,4 +46,28 @@ describe Rack::App::FrontEnd do
 
   end
 
+  describe '.cache_templates' do
+
+    rack_app do
+      extend Rack::App::FrontEnd
+
+      cache_templates Rack::App::Utils.pwd('spec','fixtures','hello.html')
+      get '/say' do
+        render(Rack::App::Utils.pwd('spec','fixtures','hello.html'))
+      end
+
+    end
+
+    it 'should cache already the template and not create the new one' do
+
+      rack_app # create class
+
+      expect(Tilt).to_not receive(:new)
+
+      expect(get(:url => '/say').body.join).to eq '<p>Hello world!</p>'
+
+    end
+
+  end
+
 end
