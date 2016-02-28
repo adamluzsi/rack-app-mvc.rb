@@ -18,6 +18,13 @@ describe Rack::App::FrontEnd::Template do
         before{ options[:layout]= Rack::App::Utils.pwd('spec','fixtures','layout.html.erb') }
 
         it { is_expected.to eq '<body><p>hello world!</p></body>' }
+
+        context 'and the template includes dynamic content or method call' do
+          before{ options[:layout]= Rack::App::Utils.pwd('spec','fixtures','dynamic_layout.html.erb') }
+          before{ object.instance_eval { @layout_text = 'sup' }}
+
+          it { is_expected.to eq '<body>sup|<p>hello world!</p></body>' }
+        end
       end
 
     end

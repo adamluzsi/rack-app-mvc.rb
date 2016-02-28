@@ -1,7 +1,7 @@
 module Rack::App::FrontEnd::Template::DefaultLayout
   extend self
 
-  def render(&block)
+  def render(*args, &block)
     block.call
   end
 
