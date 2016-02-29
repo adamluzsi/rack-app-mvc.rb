@@ -35,13 +35,7 @@ describe Rack::App::FrontEnd::InstanceMethods do
     end
 
     context 'when layout defined' do
-
-      rack_app do
-        extend Rack::App::FrontEnd
-
-        layout Rack::App::Utils.pwd('spec', 'fixtures', 'layout.html.erb')
-
-      end
+      before{ rack_app.layout(Rack::App::Utils.pwd('spec', 'fixtures', 'layout.html.erb')) }
 
       let(:path) { Rack::App::Utils.pwd('spec', 'fixtures', 'hello.html') }
 
