@@ -5,11 +5,8 @@ module Rack::App::FrontEnd
   require 'tilt/plain'
 
   require 'rack/app/front_end/version'
-  require 'rack/app/front_end/utils'
   require 'rack/app/front_end/template'
-  require 'rack/app/front_end/view'
   require 'rack/app/front_end/folder_mounter'
-
   require 'rack/app/front_end/instance_methods'
   require 'rack/app/front_end/singleton_methods'
 

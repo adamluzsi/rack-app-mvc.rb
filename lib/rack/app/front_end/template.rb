@@ -7,21 +7,21 @@ class Rack::App::FrontEnd::Template
     @cache ||= Tilt::Cache.new
   end
 
-  def render(*args, &block)
-    return render_result(*args, &block)
+  def render(scope, *args, &block)
+    return render_result(scope, *args, &block)
   end
 
   protected
 
-  def initialize(file_path, options={})
+  def initialize(file_path, klass)
     @file_path = file_path
-    @options = options
+    @class = klass
   end
 
-  def render_result(*args, &block)
+  def render_result(scope, *args, &block)
     return Rack::App::File::Streamer.new(@file_path) unless it_is_a_template?
-
-    layout.render(*args) { template.render(*args, &block) }
+    scope.extend(@class.helpers) if @class.respond_to?(:helpers)
+    layout.render(scope, *args) { template.render(scope, *args, &block) }
   end
 
   def it_is_a_template?
@@ -33,7 +33,9 @@ class Rack::App::FrontEnd::Template
   end
 
   def layout
-    @options[:layout] ? get_template(@options[:layout]) : DefaultLayout
+    return DefaultLayout if @class.respond_to?(:layout) and @class.layout.nil?
+    return DefaultLayout if @file_path =~ /^#{Regexp.escape(Rack::App::Utils.namespace_folder(@class.layout))}/
+    get_template(@class.layout)
   end
 
   def get_template(file_path)

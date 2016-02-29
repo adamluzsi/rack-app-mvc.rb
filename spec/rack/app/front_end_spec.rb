@@ -44,6 +44,25 @@ describe Rack::App::FrontEnd do
       it { is_expected.to eq Rack::App::Utils.pwd('spec','fixtures','layout.html.erb') }
     end
 
+    context 'when layout reference includes another template rendering' do
+
+      rack_app do
+
+        extend Rack::App::FrontEnd
+
+        layout 'layout.html.erb'
+
+        get '/template' do
+          @text = 'Hello world!'
+          render 'index.html.erb'
+        end
+
+      end
+
+      it { expect(get(:url => '/template').body.join.gsub("\n",'')).to eq "<body><p>HELLO WORLD!</p><p>Hello world!</p></body>" }
+
+    end
+
   end
 
   describe '.precache_templates' do
@@ -68,6 +87,36 @@ describe Rack::App::FrontEnd do
       expect(get(:url => '/say').body.join).to eq '<p>Hello world!</p>'
 
     end
+
+  end
+
+  describe '.helpers' do
+
+    rack_app do
+
+      extend Rack::App::FrontEnd
+
+      helpers do
+
+        def hello_world!
+          'Hello world!'
+        end
+
+      end
+
+      get '/in_app_space' do
+        methods.include?(:hello_world!)
+      end
+
+      get '/in_template_space' do
+        render 'hello.html.erb'
+      end
+
+    end
+
+    it { expect(get(:url => '/in_app_space').body.join).to eq 'false' }
+
+    it { expect(get(:url => '/in_template_space').body.join).to eq '<p>Hello world!</p>' }
 
   end
 

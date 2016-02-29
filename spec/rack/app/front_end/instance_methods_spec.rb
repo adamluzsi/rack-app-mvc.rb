@@ -3,10 +3,14 @@ require 'spec_helper'
 InstanceMethodsSpec = Class.new
 describe Rack::App::FrontEnd::InstanceMethods do
 
+  include Rack::App::Test
+
+  rack_app do
+    extend Rack::App::FrontEnd
+  end
+
   let(:instance) do
-    o = InstanceMethodsSpec.new
-    o.extend(described_class)
-    o
+    rack_app.new
   end
 
   describe '#render' do
@@ -31,7 +35,13 @@ describe Rack::App::FrontEnd::InstanceMethods do
     end
 
     context 'when layout defined' do
-      before { allow(InstanceMethodsSpec).to receive(:layout).and_return(Rack::App::Utils.pwd('spec', 'fixtures', 'layout.html.erb')) }
+
+      rack_app do
+        extend Rack::App::FrontEnd
+
+        layout Rack::App::Utils.pwd('spec', 'fixtures', 'layout.html.erb')
+
+      end
 
       let(:path) { Rack::App::Utils.pwd('spec', 'fixtures', 'hello.html') }
 

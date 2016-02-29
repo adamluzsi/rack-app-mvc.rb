@@ -19,4 +19,10 @@ module Rack::App::FrontEnd::SingletonMethods
     nil
   end
 
+  def helpers(&block)
+    @helpers ||= Module.new
+    @helpers.class_eval(&block) unless block.nil?
+    @helpers
+  end
+
 end
