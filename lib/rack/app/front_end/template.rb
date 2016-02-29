@@ -14,17 +14,15 @@ class Rack::App::FrontEnd::Template
 
   protected
 
-  def initialize(template_path, layout, klass)
+  def initialize(template_path, klass)
     @file_path = template_path
-    @layout = layout
     @class = klass
   end
 
   def render_result(scope, *args, &block)
     return Rack::App::File::Streamer.new(@file_path) unless it_is_a_template?
     extend_with_helpers(scope)
-    block_layouts_for(scope)
-    layout.render(scope, *args) { template.render(scope, *args, &block) }
+    layout(scope).render(scope, *args) { template.render(scope, *args, &block) }
   end
 
   def it_is_a_template?
@@ -35,20 +33,17 @@ class Rack::App::FrontEnd::Template
     get_template(@file_path)
   end
 
-  def layout
-    return DefaultLayout if use_default_layout?
-
-    get_template(layout_path)
+  def layout(scope)
+    return DefaultLayout if use_default_layout?(scope)
+    block_layouts_for(scope)
+    get_template(@class.layout)
   end
 
-  def layout_path
-    return @class.layout
-  end
 
-  def use_default_layout?
-    (@layout == NO_LAYOUT_KEYWORD) or
+  def use_default_layout?(scope)
+    (scope.instance_variable_get(:@layout) == NO_LAYOUT_KEYWORD) or
         (@class.respond_to?(:layout) and @class.layout.nil?) or
-        (@file_path =~ /^#{Regexp.escape(Rack::App::Utils.namespace_folder(layout_path))}/)
+        (@file_path =~ /^#{Regexp.escape(Rack::App::Utils.namespace_folder(@class.layout))}/)
   end
 
   def get_template(file_path)
@@ -60,7 +55,7 @@ class Rack::App::FrontEnd::Template
   end
 
   def block_layouts_for(scope)
-    scope.__runtime_properties__[:layout]= NO_LAYOUT_KEYWORD
+    scope.instance_variable_set(:@layout, NO_LAYOUT_KEYWORD)
   end
 
 end
