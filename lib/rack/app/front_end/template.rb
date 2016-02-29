@@ -36,11 +36,15 @@ class Rack::App::FrontEnd::Template
 
   def layout
 
-    return DefaultLayout if @layout == :none
-    return DefaultLayout if @class.respond_to?(:layout) and @class.layout.nil?
-    return DefaultLayout if @file_path =~ /^#{Regexp.escape(Rack::App::Utils.namespace_folder(@class.layout))}/
+    return DefaultLayout if use_default_layout?
 
     get_template(@class.layout)
+  end
+
+  def use_default_layout?
+    (@layout == :none) or
+        (@class.respond_to?(:layout) and @class.layout.nil?) or
+        (@file_path =~ /^#{Regexp.escape(Rack::App::Utils.namespace_folder(@class.layout))}/)
   end
 
   def get_template(file_path)
