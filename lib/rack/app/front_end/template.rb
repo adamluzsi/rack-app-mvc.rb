@@ -1,5 +1,6 @@
 require 'tilt'
 class Rack::App::FrontEnd::Template
+  NO_LAYOUT_KEYWORD = :none
 
   require 'rack/app/front_end/template/default_layout'
 
@@ -35,16 +36,19 @@ class Rack::App::FrontEnd::Template
   end
 
   def layout
-
     return DefaultLayout if use_default_layout?
 
-    get_template(@class.layout)
+    get_template(layout_path)
+  end
+
+  def layout_path
+    return @class.layout
   end
 
   def use_default_layout?
-    (@layout == :none) or
+    (@layout == NO_LAYOUT_KEYWORD) or
         (@class.respond_to?(:layout) and @class.layout.nil?) or
-        (@file_path =~ /^#{Regexp.escape(Rack::App::Utils.namespace_folder(@class.layout))}/)
+        (@file_path =~ /^#{Regexp.escape(Rack::App::Utils.namespace_folder(layout_path))}/)
   end
 
   def get_template(file_path)
@@ -56,7 +60,7 @@ class Rack::App::FrontEnd::Template
   end
 
   def block_layouts_for(scope)
-    scope.instance_variable_set(:@layout, :none)
+    scope.__runtime_properties__[:layout]= NO_LAYOUT_KEYWORD
   end
 
 end
