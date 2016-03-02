@@ -4,3 +4,11 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'rack/app/front_end'
 require 'rack/app'
 require 'rack/app/test'
+
+RSpec.configure do |c|
+
+  c.before(:each) do
+    Rack::App::FrontEnd::Template.cache.clear
+  end
+
+end

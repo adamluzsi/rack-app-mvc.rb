@@ -3,13 +3,16 @@ class Rack::App::FrontEnd::Template
   NO_LAYOUT_KEYWORD = :none
 
   require 'rack/app/front_end/template/default_layout'
+  require 'rack/app/front_end/template/default_template'
 
   def self.cache
     @cache ||= Tilt::Cache.new
   end
 
   def render(scope, *args, &block)
-    return render_result(scope, *args, &block)
+    extend_with_helpers(scope)
+
+    layout(scope).render(scope, *args) { template.render(scope, *args, &block) }
   end
 
   protected
@@ -19,18 +22,16 @@ class Rack::App::FrontEnd::Template
     @class = klass
   end
 
-  def render_result(scope, *args, &block)
-    return Rack::App::File::Streamer.new(@file_path) unless it_is_a_template?
-    extend_with_helpers(scope)
-    layout(scope).render(scope, *args) { template.render(scope, *args, &block) }
-  end
-
-  def it_is_a_template?
+  def is_a_template?
     not Tilt.templates_for(@file_path).empty?
   end
 
   def template
-    get_template(@file_path)
+    if is_a_template?
+      get_template(@file_path)
+    else
+      DefaultTemplate.new(@file_path)
+    end
   end
 
   def layout(scope)
@@ -47,7 +48,11 @@ class Rack::App::FrontEnd::Template
   end
 
   def get_template(file_path)
-    self.class.cache.fetch(file_path) { Tilt.new(file_path) }
+    self.class.cache.fetch(file_path) { Tilt.new(file_path, template_options) }
+  end
+
+  def template_options
+    @class.template_options
   end
 
   def extend_with_helpers(scope)

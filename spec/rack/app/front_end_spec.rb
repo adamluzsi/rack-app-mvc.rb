@@ -7,41 +7,41 @@ describe Rack::App::FrontEnd do
     extend Rack::App::FrontEnd
   end
 
-  let(:instance){ rack_app }
+  let(:instance) { rack_app }
 
   it 'has a version number' do
     expect(Rack::App::FrontEnd::VERSION).not_to be nil
   end
 
   describe '.layout' do
-    subject{ instance.layout }
+    subject { instance.layout }
 
     context 'when it is not pre defined' do
-      it { is_expected.to be nil}
+      it { is_expected.to be nil }
     end
 
     context 'when it is defined with relative' do
-      before{ instance.layout 'layout.html.erb' }
+      before { instance.layout 'layout.html.erb' }
 
-      it { is_expected.to be_a String}
+      it { is_expected.to be_a String }
 
-      it { is_expected.to eq Rack::App::Utils.pwd('spec','rack','app','front_end_spec','layout.html.erb') }
+      it { is_expected.to eq Rack::App::Utils.pwd('spec', 'rack', 'app', 'front_end_spec', 'layout.html.erb') }
     end
 
     context 'when it is defined with relative' do
-      before{ instance.layout './../../fixtures/layout.html.erb' }
+      before { instance.layout './../../fixtures/layout.html.erb' }
 
-      it { is_expected.to be_a String}
+      it { is_expected.to be_a String }
 
-      it { is_expected.to eq Rack::App::Utils.pwd('spec','fixtures','layout.html.erb') }
+      it { is_expected.to eq Rack::App::Utils.pwd('spec', 'fixtures', 'layout.html.erb') }
     end
 
     context 'when it is defined with project root absolute path' do
-      before{ instance.layout '/spec/fixtures/layout.html.erb' }
+      before { instance.layout '/spec/fixtures/layout.html.erb' }
 
-      it { is_expected.to be_a String}
+      it { is_expected.to be_a String }
 
-      it { is_expected.to eq Rack::App::Utils.pwd('spec','fixtures','layout.html.erb') }
+      it { is_expected.to eq Rack::App::Utils.pwd('spec', 'fixtures', 'layout.html.erb') }
     end
 
     context 'when layout reference includes another template rendering' do
@@ -59,33 +59,30 @@ describe Rack::App::FrontEnd do
 
       end
 
-      it { expect(get(:url => '/template').body.join.gsub("\n",'')).to eq "<body><p>HELLO WORLD!</p><p>Hello world!</p></body>" }
+      it { expect(get(:url => '/template').body.join.gsub("\n", '')).to eq "<body><p>HELLO WORLD!</p><p>Hello world!</p></body>" }
 
     end
 
   end
 
-  describe '.precache_templates' do
+  describe '.template_options' do
 
     rack_app do
+
       extend Rack::App::FrontEnd
 
-      precache_templates Rack::App::Utils.pwd('spec','fixtures','hello.html')
-
-      get '/say' do
-        render(Rack::App::Utils.pwd('spec','fixtures','hello.html'))
+      get '/bumm' do
+        render 'utf8.html'
       end
 
     end
 
-    it 'should cache already the template and not create the new one' do
+    it { expect { get(:url => '/bumm') }.to_not raise_error }
 
-      rack_app # create class
+    context 'when we set template options to something ' do
+      before { rack_app.template_options :default_encoding => 'ASCII' }
 
-      expect(Tilt).to_not receive(:new)
-
-      expect(get(:url => '/say').body.join).to eq '<p>Hello world!</p>'
-
+      it { expect { get(:url => '/bumm') }.to raise_error Encoding::InvalidByteSequenceError, /not valid US-ASCII/ }
     end
 
   end
