@@ -21,7 +21,13 @@ module Rack::App::FrontEnd
         klass.__send__(:extend, self::SingletonMethods)
 
         klass.on_inheritance do |parent, child|
+
           child.layout(parent.layout)
+
+          child.helpers do
+            include(parent.helpers)
+          end
+
         end
 
       end
