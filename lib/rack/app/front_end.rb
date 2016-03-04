@@ -4,6 +4,7 @@ module Rack::App::FrontEnd
   require 'tilt'
   require 'tilt/plain'
 
+  require 'rack/app/front_end/utils'
   require 'rack/app/front_end/version'
   require 'rack/app/front_end/helpers'
   require 'rack/app/front_end/template'

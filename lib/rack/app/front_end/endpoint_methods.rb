@@ -5,7 +5,7 @@ module Rack::App::FrontEnd::EndpointMethods
 
     scope = Rack::App::FrontEnd::Template::Scope.new
     scope.extend(self.class.helpers)
-    scope.inherit_instance_variables!(self)
+    Rack::App::FrontEnd::Utils.link_instance_variables(self, scope)
 
     full_path = Rack::App::Utils.expand_path(template_path)
     template = Rack::App::FrontEnd::Template.new(full_path, options)
