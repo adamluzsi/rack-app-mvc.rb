@@ -65,24 +65,38 @@ describe Rack::App::FrontEnd do
 
   end
 
-  describe '.template_options' do
+  describe '#render' do
 
-    rack_app do
+    context 'when template options is given' do
 
-      extend Rack::App::FrontEnd
+      rack_app do
 
-      get '/bumm' do
-        render 'utf8.html'
+        extend Rack::App::FrontEnd
+
+        get '/bumm' do
+          render 'utf8.html', {}, {:default_encoding => 'ASCII'}
+        end
+
       end
+
+      it { expect { get(:url => '/bumm') }.to raise_error Encoding::InvalidByteSequenceError, /not valid US-ASCII/ }
 
     end
 
-    it { expect { get(:url => '/bumm') }.to_not raise_error }
+    context 'when template options is left to be default' do
 
-    context 'when we set template options to something ' do
-      before { rack_app.template_options :default_encoding => 'ASCII' }
+      rack_app do
 
-      it { expect { get(:url => '/bumm') }.to raise_error Encoding::InvalidByteSequenceError, /not valid US-ASCII/ }
+        extend Rack::App::FrontEnd
+
+        get '/bumm' do
+          render 'utf8.html'
+        end
+
+      end
+
+      it { expect { get(:url => '/bumm') }.to_not raise_error }
+
     end
 
   end

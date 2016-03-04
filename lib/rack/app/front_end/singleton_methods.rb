@@ -11,16 +11,16 @@ module Rack::App::FrontEnd::SingletonMethods
     @layout
   end
 
-  def template_options(hash=nil)
-    @template_options ||= {:default_encoding => "utf-8"}
-    @template_options.merge!(hash) if hash.is_a?(Hash)
-    @template_options
-  end
-
   def helpers(&block)
-    @helpers ||= Module.new
+
+    @helpers ||= lambda {
+      helpers_module = Module.new
+      helpers_module.include(Rack::App::FrontEnd::Helpers)
+    }.call
+
     @helpers.class_eval(&block) unless block.nil?
-    @helpers
+
+    return @helpers
   end
 
 end

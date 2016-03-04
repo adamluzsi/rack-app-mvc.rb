@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 InstanceMethodsSpec = Class.new
-describe Rack::App::FrontEnd::InstanceMethods do
+describe Rack::App::FrontEnd::EndpointMethods do
 
   include Rack::App::Test
 
