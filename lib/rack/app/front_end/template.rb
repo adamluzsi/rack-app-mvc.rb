@@ -13,11 +13,10 @@ class Rack::App::FrontEnd::Template
     not Tilt.templates_for(file_path).empty?
   end
 
-  def render(current_scope, variables={}, &block)
-    scope = create_scope(current_scope)
-
+  def render(scope, variables={}, &block)
     layout.render(scope, variables) { template.render(scope, variables, &block) }
   end
+
 
   protected
 
@@ -51,13 +50,6 @@ class Rack::App::FrontEnd::Template
 
   def get_template(file_path)
     self.class.cache.fetch(file_path) { Tilt.new(file_path, @template_options) }
-  end
-
-  def create_scope(current_scope)
-    new_scope = Scope.new
-    new_scope.inherit_instance_variables!(current_scope)
-    new_scope.inherit_modules!(current_scope)
-    new_scope
   end
 
 end
