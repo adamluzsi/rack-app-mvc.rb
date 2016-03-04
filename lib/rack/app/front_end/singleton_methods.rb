@@ -15,7 +15,7 @@ module Rack::App::FrontEnd::SingletonMethods
 
     @helpers ||= lambda {
       helpers_module = Module.new
-      helpers_module.include(Rack::App::FrontEnd::Helpers)
+      helpers_module.__send__(:include, Rack::App::FrontEnd::Helpers)
     }.call
 
     @helpers.class_eval(&block) unless block.nil?
