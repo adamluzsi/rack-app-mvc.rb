@@ -12,3 +12,7 @@ RSpec.configure do |c|
   end
 
 end
+
+Dir.glob(File.join(File.dirname(__FILE__),'spec_helper','shared','**','*.rb')).each do |file_path|
+  require(file_path)
+end
