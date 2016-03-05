@@ -110,7 +110,7 @@ describe Rack::App::FrontEnd do
       helpers do
 
         include helper :html_dsl
-        include helper :boilerplate
+        include helper :table
 
         def hello_world!
           'Hello world!'
@@ -130,8 +130,8 @@ describe Rack::App::FrontEnd do
         render 'html_dsl_test.html.erb'
       end
 
-      get '/boilerplate' do
-        render 'boilerplate.html.erb', array_of_hash: [{:hello => 'world'}]
+      get '/table' do
+        render 'table.html.erb', array_of_hash: [{:hello => 'world'}]
       end
 
     end
@@ -142,7 +142,7 @@ describe Rack::App::FrontEnd do
 
     it { expect(get(:url => '/html_dsl_extension').body.join).to eq '<label>Hello world!</label>' }
 
-    it { expect(get(:url => '/boilerplate').body.join).to eq "<table><tr><td>hello</td></tr><tr><td>world</td></tr></table>" }
+    it { expect(get(:url => '/table').body.join).to eq "<table><tr><td>hello</td></tr><tr><td>world</td></tr></table>" }
 
   end
 

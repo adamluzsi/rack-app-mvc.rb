@@ -1,4 +1,4 @@
-module Rack::App::FrontEnd::Helpers::Boilerplate
+module Rack::App::FrontEnd::Helpers::Table
 
   def table_by(array_of_hash)
 
@@ -30,15 +30,6 @@ module Rack::App::FrontEnd::Helpers::Boilerplate
     end
 
     table_html
-  end
-
-  def form_tag(*args, &block)
-    args.unshift({'method' => "get", 'accept-charset' => "UTF-8"})
-
-    o = Object.new
-    o.extend(Rack::App::FrontEnd::Helpers::HtmlDsl)
-
-    o.__send__(:form_tag,*args,&block)
   end
 
 end

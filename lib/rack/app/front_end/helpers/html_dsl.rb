@@ -23,4 +23,9 @@ module Rack::App::FrontEnd::Helpers::HtmlDsl
     super
   end
 
+  def form_tag(*args, &block)
+    args.unshift({'method' => "get", 'accept-charset' => "UTF-8"})
+    super
+  end
+
 end
