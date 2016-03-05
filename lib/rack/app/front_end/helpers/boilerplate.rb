@@ -1,8 +1,5 @@
 module Rack::App::FrontEnd::Helpers::Boilerplate
 
-  require 'rack/app/front_end/helpers/boilerplate/html_dsl'
-  include Rack::App::FrontEnd::Helpers::Boilerplate::HtmlDsl
-
   def table_by(array_of_hash)
 
     headers = array_of_hash.reduce([]) do |trs, hash|
@@ -11,7 +8,10 @@ module Rack::App::FrontEnd::Helpers::Boilerplate
       trs
     end
 
-    table_html = table_tag do
+    o = Object.new
+    o.extend(Rack::App::FrontEnd::Helpers::HtmlDsl)
+
+    table_html = o.__send__ :table_tag do
 
       tr_tag do
         headers.each do |header|
@@ -34,7 +34,11 @@ module Rack::App::FrontEnd::Helpers::Boilerplate
 
   def form_tag(*args, &block)
     args.unshift({'method' => "get", 'accept-charset' => "UTF-8"})
-    super
+
+    o = Object.new
+    o.extend(Rack::App::FrontEnd::Helpers::HtmlDsl)
+
+    o.__send__(:form_tag,*args,&block)
   end
 
 end

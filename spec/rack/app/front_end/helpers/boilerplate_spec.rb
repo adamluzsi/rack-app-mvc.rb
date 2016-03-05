@@ -42,7 +42,7 @@ describe Rack::App::FrontEnd::Helpers::Boilerplate do
     end
   end
 
-  describe '#*_tag DSL' do
+  describe '#form_tag' do
 
     it 'should create the html tags with syntax sugar with' do
 

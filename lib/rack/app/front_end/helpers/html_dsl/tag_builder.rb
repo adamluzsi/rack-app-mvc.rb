@@ -1,4 +1,4 @@
-module Rack::App::FrontEnd::Helpers::Boilerplate::HtmlDsl::TagBuilder
+module Rack::App::FrontEnd::Helpers::HtmlDsl::TagBuilder
 
   extend self
 
@@ -21,7 +21,7 @@ module Rack::App::FrontEnd::Helpers::Boilerplate::HtmlDsl::TagBuilder
     if not content.empty? or not block.nil?
       html << ">"
       html << content
-      html << Rack::App::FrontEnd::Helpers::Boilerplate::HtmlDsl::Block.new(&block).to_s unless block.nil?
+      html << Rack::App::FrontEnd::Helpers::HtmlDsl::Block.new(&block).to_s unless block.nil?
       html << "</#{tag_name}>"
     else
       html << "/>"

@@ -109,6 +109,8 @@ describe Rack::App::FrontEnd do
 
       helpers do
 
+        include helper :html_dsl
+
         def hello_world!
           'Hello world!'
         end
@@ -123,11 +125,17 @@ describe Rack::App::FrontEnd do
         render 'hello.html.erb'
       end
 
+      get '/html_dsl_extension' do
+        render 'html_dsl_test.html.erb'
+      end
+
     end
 
     it { expect(get(:url => '/in_app_space').body.join).to eq 'false' }
 
     it { expect(get(:url => '/in_template_space').body.join).to eq '<p>Hello world!</p>' }
+
+    it { expect(get(:url => '/html_dsl_extension').body.join).to eq '<label>Hello world!</label>' }
 
   end
 

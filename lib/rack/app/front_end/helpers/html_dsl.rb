@@ -1,8 +1,8 @@
-module Rack::App::FrontEnd::Helpers::Boilerplate::HtmlDsl
+module Rack::App::FrontEnd::Helpers::HtmlDsl
   UnImplementedError = Class.new(StandardError)
 
-  require 'rack/app/front_end/helpers/boilerplate/html_dsl/block'
-  require 'rack/app/front_end/helpers/boilerplate/html_dsl/tag_builder'
+  require 'rack/app/front_end/helpers/html_dsl/block'
+  require 'rack/app/front_end/helpers/html_dsl/tag_builder'
 
   def self.build(method_name, *args, &block)
     case method_name.to_s
@@ -18,7 +18,7 @@ module Rack::App::FrontEnd::Helpers::Boilerplate::HtmlDsl
   end
 
   def method_missing(method_name,*args,&block)
-    Rack::App::FrontEnd::Helpers::Boilerplate::HtmlDsl.build(method_name,*args,&block)
+    Rack::App::FrontEnd::Helpers::HtmlDsl.build(method_name,*args,&block)
   rescue UnImplementedError
     super
   end
