@@ -1,5 +1,4 @@
-# Rack::App::FrontEnd [![Build Status](https://travis-ci.org/adamluzsi/rack-app-front_end.rb.svg?branch=master)](https://travis-ci.org/adamluzsi/rack-app-front_end.rb)
-
+# Rack::App::FrontEnd [![Build Status](https://travis-ci.org/rack-app/rack-app-front_end.svg?branch=master)](https://travis-ci.org/rack-app/rack-app-front_end)
 This is an extend module for Rack::App to have FrontEnd framework extensions for the core app class
 
 ## Installation
