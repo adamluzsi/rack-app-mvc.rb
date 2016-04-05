@@ -1,10 +1,9 @@
 require 'spec_helper'
-
 describe Rack::App::FrontEnd do
 
   include Rack::App::Test
   rack_app do
-    extend Rack::App::FrontEnd
+    apply_extensions :front_end
   end
 
   let(:instance) { rack_app }
@@ -14,14 +13,14 @@ describe Rack::App::FrontEnd do
   end
 
   describe '.layout' do
-    subject { instance.layout }
+    subject { rack_app.layout }
 
     context 'when it is not pre defined' do
       it { is_expected.to be nil }
     end
 
     context 'when it is defined with relative' do
-      before { instance.layout 'layout.html.erb' }
+      before { rack_app.layout 'layout.html.erb' }
 
       it { is_expected.to be_a String }
 
@@ -29,7 +28,7 @@ describe Rack::App::FrontEnd do
     end
 
     context 'when it is defined with relative' do
-      before { instance.layout './../../fixtures/layout.html.erb' }
+      before { rack_app.layout './../../fixtures/layout.html.erb' }
 
       it { is_expected.to be_a String }
 
@@ -37,7 +36,7 @@ describe Rack::App::FrontEnd do
     end
 
     context 'when it is defined with project root absolute path' do
-      before { instance.layout '/spec/fixtures/layout.html.erb' }
+      before { rack_app.layout '/spec/fixtures/layout.html.erb' }
 
       it { is_expected.to be_a String }
 
@@ -59,7 +58,7 @@ describe Rack::App::FrontEnd do
 
       end
 
-      it { expect(get(:url => '/template').body.join.gsub("\n", '')).to eq "<body><p>HELLO WORLD!</p><p>Hello world!</p></body>" }
+      it { expect(get(:url => '/template').body.gsub("\n", '')).to eq "<body><p>HELLO WORLD!</p><p>Hello world!</p></body>" }
 
     end
 
@@ -136,13 +135,13 @@ describe Rack::App::FrontEnd do
 
     end
 
-    it { expect(get(:url => '/in_app_space').body.join).to eq 'false' }
+    it { expect(get(:url => '/in_app_space').body).to eq 'false' }
 
-    it { expect(get(:url => '/in_template_space').body.join).to eq '<p>Hello world!</p>' }
+    it { expect(get(:url => '/in_template_space').body).to eq '<p>Hello world!</p>' }
 
-    it { expect(get(:url => '/html_dsl_extension').body.join).to eq '<label>Hello world!</label>' }
+    it { expect(get(:url => '/html_dsl_extension').body).to eq '<label>Hello world!</label>' }
 
-    it { expect(get(:url => '/table').body.join).to eq "<table><tr><td>hello</td></tr><tr><td>world</td></tr></table>" }
+    it { expect(get(:url => '/table').body).to eq "<table><tr><td>hello</td></tr><tr><td>world</td></tr></table>" }
 
   end
 

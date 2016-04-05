@@ -6,7 +6,7 @@ describe Rack::App::FrontEnd::EndpointMethods do
   include Rack::App::Test
 
   rack_app do
-    extend Rack::App::FrontEnd
+    apply_extensions :front_end
   end
 
   let(:instance) do
@@ -35,11 +35,21 @@ describe Rack::App::FrontEnd::EndpointMethods do
     end
 
     context 'when layout defined' do
-      before{ rack_app.layout(Rack::App::Utils.pwd('spec', 'fixtures', 'layout.html.erb')) }
 
-      let(:path) { Rack::App::Utils.pwd('spec', 'fixtures', 'hello.html') }
+      rack_app do
 
-      it { is_expected.to eq '<body><p>Hello world!</p></body>' }
+        apply_extensions :front_end
+
+        layout(Rack::App::Utils.pwd('spec', 'fixtures', 'layout.html.erb'))
+
+        get '/' do
+          render Rack::App::Utils.pwd('spec', 'fixtures', 'hello.html')
+        end
+
+      end
+
+      it { expect(get('/').body).to eq '<body><p>Hello world!</p></body>' }
+
     end
 
   end

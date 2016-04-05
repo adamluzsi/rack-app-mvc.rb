@@ -16,7 +16,7 @@ describe Rack::App::FrontEnd::Template do
   end
 
   describe '#render' do
-    subject { get(:url => '/hello', :params => {'file_path' => file_path}).body.join }
+    subject { get(:url => '/hello', :params => {'file_path' => file_path}).body }
 
     context 'when file is a html with erb' do
 

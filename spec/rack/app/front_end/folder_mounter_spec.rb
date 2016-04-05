@@ -6,9 +6,10 @@ describe Rack::App::FrontEnd::FolderMounter do
   let(:instance) { described_class.new(rack_app) }
 
   include Rack::App::Test
+
   rack_app do
 
-    extend Rack::App::FrontEnd
+    apply_extensions :front_end
 
     def initialize
       @say = 'hello world'
@@ -24,15 +25,15 @@ describe Rack::App::FrontEnd::FolderMounter do
 
       it 'should send as raw string object for rack body' do
         subject
-        expect(get(:url => '/raw').body.join).to be_a String
-        expect(get(:url => '/raw').body.join).to eq "hello world!\nhow you doing?"
+        expect(get(:url => '/raw').body).to be_a String
+        expect(get(:url => '/raw').body).to eq "hello world!\nhow you doing?"
       end
 
     end
 
     it 'should parse and fetch the raw text' do
       subject
-      expect(get(:url => '/index').body).to eq ["<p>hello world</p>"]
+      expect(get(:url => '/index').body).to eq "<p>hello world</p>"
     end
 
   end
