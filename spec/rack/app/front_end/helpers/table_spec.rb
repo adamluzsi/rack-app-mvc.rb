@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Rack::App::FrontEnd::Helpers::Table do
-
   include_examples :string_formatter
 
   let(:instance) do
@@ -10,13 +9,14 @@ describe Rack::App::FrontEnd::Helpers::Table do
     o
   end
 
-  describe '#create_table' do
-    subject { instance.table_by(array_of_hash) }
+  describe '#table_by' do
+    subject { instance.table_by(object) }
 
-    let(:array_of_hash) { [{:hello => 'world'}, {:hello => 'programming', :col => 'val'}] }
+    context 'when object is an array of hash' do
+      let(:object) { [{ hello: 'world' }, { hello: 'programming', col: 'val' }] }
 
-    it 'should create a html table based on the array of has content' do
-      is_expected.to eq uglier_html <<-HTML
+      it 'should create a html table based on the array of has content' do
+        is_expected.to eq uglier_html <<-HTML
 
             <table>
 
@@ -38,8 +38,31 @@ describe Rack::App::FrontEnd::Helpers::Table do
             </table>
 
       HTML
+      end
+    end
 
+    context 'when object is a hash' do
+      let(:object) { { name: 'cat', lives: 9 } }
+
+      it 'should create a html table based on the hash content' do
+        is_expected.to eq uglier_html <<-HTML
+
+            <table>
+
+              <tr>
+                <td>name</td>
+                <td>cat</td>
+              </tr>
+
+              <tr>
+                <td>lives</td>
+                <td>9</td>
+              </tr>
+
+            </table>
+
+      HTML
+      end
     end
   end
-
 end
