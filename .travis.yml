@@ -1,5 +1,5 @@
 language: ruby
-script: rspec spec
+script: rspec -f d
 
 rvm:
 
@@ -14,12 +14,3 @@ rvm:
 branches:
   only:
     - master
-
-matrix:
-  allow_failures:
-    - rvm: ruby-head
-    - rvm: jruby-head
-
-notifications:
-  email:
-    - adamluzsi@gmail.com
