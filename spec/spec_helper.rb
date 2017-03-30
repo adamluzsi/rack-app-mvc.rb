@@ -6,13 +6,19 @@ require 'rack/app'
 require 'rack/app/test'
 
 RSpec.configure do |c|
-
   c.before(:each) do
     Rack::App::FrontEnd::Template.cache.clear
   end
-
 end
 
-Dir.glob(File.join(File.dirname(__FILE__),'spec_helper','shared','**','*.rb')).each do |file_path|
+FIXTURES_DIRECTORY = File.join(File.dirname(__FILE__), 'fixtures')
+
+SPEC_HELPER_DIRECTORY = File.join(File.dirname(__FILE__), 'spec_helper')
+
+Dir.glob(File.join(SPEC_HELPER_DIRECTORY, 'shared', '**', '*.rb')).each do |file_path|
+  require(file_path)
+end
+
+Dir.glob(File.join(SPEC_HELPER_DIRECTORY, 'examples', '**', '*.rb')).each do |file_path|
   require(file_path)
 end

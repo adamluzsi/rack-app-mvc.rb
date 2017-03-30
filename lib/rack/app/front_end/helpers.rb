@@ -6,4 +6,8 @@ module Rack::App::FrontEnd::Helpers
 
   include Rack::App::FrontEnd::Helpers::Rendering
 
+  def path_to(*args)
+    @request.env[::Rack::App::Constants::ENV::HANDLER].path_to(*args)
+  end
+
 end

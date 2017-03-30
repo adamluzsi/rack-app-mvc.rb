@@ -8,6 +8,7 @@ module Rack::App::FrontEnd
   require 'rack/app/front_end/version'
   require 'rack/app/front_end/helpers'
   require 'rack/app/front_end/template'
+  require 'rack/app/front_end/middlewares'
   require 'rack/app/front_end/syntax_sugar'
   require 'rack/app/front_end/folder_mounter'
   require 'rack/app/front_end/endpoint_methods'
