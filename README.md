@@ -20,20 +20,22 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
+require 'rack/app'
+require 'rack/app/front_end'
 
 class App < Rack::App
-  
-  extend Rack::App::FrontEnd 
-  
+
+  apply_extensions :front_end
+
   mount_folder '/from/project/root/path'
-  
+
   mount_folder 'relative/folder/from/this/file/to/folder'
-  
+
   get '/some_url' do
     @items = []
     render 'some.html.erb'
   end
-  
+
 end
 
 ```
@@ -48,4 +50,3 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rack-app-mvc. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
-
