@@ -115,7 +115,7 @@ describe Rack::App::FrontEnd do
           'Hello world!'
         end
         
-        def instance_var
+        def get_instance_var
           @var_name
         end
 
@@ -155,7 +155,7 @@ describe Rack::App::FrontEnd do
 
     it { expect(get(:url => '/table').body).to eq "<table><tr><td>hello</td></tr><tr><td>world</td></tr></table>" }
     
-    it { expect(get(:url => '/ivar').body).to eq "42" }
+    it { expect(get(:url => '/ivar').body).to eq "42 - 42" }
 
   end
 
