@@ -2,11 +2,12 @@ require 'tilt'
 class Rack::App::FrontEnd::Template
 
   require 'rack/app/front_end/template/scope'
+  require 'rack/app/front_end/template/cache'
   require 'rack/app/front_end/template/default_layout'
   require 'rack/app/front_end/template/default_template'
 
   def self.cache
-    @cache ||= Tilt::Cache.new
+    @cache ||= Rack::App::FrontEnd::Template::Cache.new
   end
 
   def self.template?(file_path)

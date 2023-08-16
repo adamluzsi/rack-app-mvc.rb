@@ -5,7 +5,7 @@ describe Rack::App::FrontEnd::Middlewares::MethodOverride do
 
   def app
     Rack::Lint.new(described_class.new(lambda {|e|
-      [200, {"Content-Type" => "text/plain"}, []]
+      [200, {"content-type" => "text/plain"}, []]
     }))
   end
 
