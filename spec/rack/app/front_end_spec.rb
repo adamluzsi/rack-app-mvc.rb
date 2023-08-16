@@ -114,7 +114,15 @@ describe Rack::App::FrontEnd do
         def hello_world!
           'Hello world!'
         end
+        
+        def instance_var
+          @var_name
+        end
 
+      end
+      
+      def initialize
+        @var_name = 42
       end
 
       get '/in_app_space' do
@@ -133,6 +141,10 @@ describe Rack::App::FrontEnd do
         render 'table.html.erb', array_of_hash: [{:hello => 'world'}]
       end
 
+      get '/ivar' do 
+        render 'ivar.html.erb'
+      end
+      
     end
 
     it { expect(get(:url => '/in_app_space').body).to eq 'false' }
@@ -142,6 +154,8 @@ describe Rack::App::FrontEnd do
     it { expect(get(:url => '/html_dsl_extension').body).to eq '<label>Hello world!</label>' }
 
     it { expect(get(:url => '/table').body).to eq "<table><tr><td>hello</td></tr><tr><td>world</td></tr></table>" }
+    
+    it { expect(get(:url => '/ivar').body).to eq "42" }
 
   end
 
