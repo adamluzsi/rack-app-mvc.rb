@@ -37,25 +37,21 @@ module Rack::App::FrontEnd
 
   end
 
-  if Rack::App::VERSION >= '3.0.0'
+  Rack::App::Extension.register :front_end do
 
-    Rack::App::Extension.register :front_end do
+    include Rack::App::FrontEnd::EndpointMethods
+    extend Rack::App::FrontEnd::SingletonMethods
 
-      include Rack::App::FrontEnd::EndpointMethods
-      extend Rack::App::FrontEnd::SingletonMethods
+    on_inheritance do |parent, child|
 
-      on_inheritance do |parent, child|
+      child.layout(parent.layout)
 
-        child.layout(parent.layout)
-
-        child.helpers do
-          include(parent.helpers)
-        end
-
+      child.helpers do
+        include(parent.helpers)
       end
 
     end
 
   end
-
+  
 end
